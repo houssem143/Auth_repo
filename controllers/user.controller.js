@@ -7,7 +7,7 @@ const secret = config.get("secret")
 
 
 exports.register = async(req,res)=>{
-    const {name,email,phone,password}=req.body
+    const {name,email,phone,password,userRole}=req.body
 
     try {
      const existingUser = await User.findOne({email})
@@ -19,7 +19,8 @@ exports.register = async(req,res)=>{
             name,
             email,
             phone,
-            password
+            password,
+            userRole
         })
 
         const salt = await bcrypt.genSalt(10)
@@ -30,7 +31,8 @@ exports.register = async(req,res)=>{
         res.send({
             name:newUser.name,
             email:newUser.email,
-            phone:newUser.phone
+            phone:newUser.phone,
+            userRole:newUser.userRole
         })
     } catch (error) {
         res.status(500).json({msg:error.message})
@@ -42,7 +44,7 @@ exports.login = async(req,res)=>{
     const {email,password}=req.body
     try {
         const user = await User.findOne({email})
-        // console.log(user)
+       
         if (!user) {
             return res.status(400).json({msg:"Email or password invalid"})
         }
@@ -63,8 +65,10 @@ exports.login = async(req,res)=>{
                 phone:user.phone
             }
         })
-        // res.send(user)
     } catch (error) {
         res.status(500).json({msg:error.message})
     }
 }
+exports.getProfile = (req, res) => {
+    res.send(req.user)
+  };

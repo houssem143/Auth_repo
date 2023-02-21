@@ -12,7 +12,7 @@ exports.registerRules = () => [
 
 
 exports.validator = (req,res,next)=> {
-    const errors = validationResult(req)
+    const errors = validationResult(req)  
 
     errors.isEmpty() ? next() : res.status(400).json({msg:errors.array().map(el=>el.msg)})
 }

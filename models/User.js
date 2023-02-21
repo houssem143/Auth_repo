@@ -10,8 +10,13 @@ const userSchema = new Schema({
     },
     email:String,
     phone:String,
-    password:String
+    password:String,
+    userRole: {
+        type: String,
+        default: 'User',
+        roles: ['User', 'Admin'],
+      },
 })
 
 
-module.exports = mongoose.model("User",userSchema)
+module.exports = User = mongoose.model("User",userSchema)
